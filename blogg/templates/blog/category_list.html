@@ -1,0 +1,19 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+  <body>
+ 
+    <main class="container">
+      <div class="row">
+        <div class="col">
+          {% for category in categories %}
+          <article class="Category">
+            <!-- <time class="date">published: {{ category.published_date }}</time> -->
+            <h2><a href="{% url 'category_detail' slug=category.slug %}">{{ category.title }}</a></h2>
+            <p>{{ category.text|linebreaksbr }}</p>
+          </article>
+          {% endfor %}
+          {% endblock %}
+        </div>
+      </div>
+    </main>
+  </body>

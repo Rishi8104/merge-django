@@ -1,0 +1,21 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block content %}
+  <body>
+ 
+    <main class="container">
+      <div class="row">
+        <div class="col">
+          {% for Tag in Tags %}
+          <article class="Tag">
+            <time class="date">published: {{ post.published_date }}</time>
+            <h2><a href="{% url 'Tag_detail' slug=Tag.slug %}">{{ Tag.name }}</a></h2>
+            <p>{{ Tag.text|linebreaksbr }}</p>
+          </article>
+          {% endfor %}
+          {% endblock %}
+
+        </div>
+      </div>
+    </main>
+  </body>

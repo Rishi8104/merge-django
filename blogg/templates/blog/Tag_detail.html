@@ -1,0 +1,19 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block content %}
+    <article class="Tag">
+        <aside class="actions">
+            {% if user.is_authenticated %}
+     <a href="{% url 'Tag_detail' slug=Tag.slug %}"></a>
+{% endif %}
+    </aside>
+    <h2>{{ Tag.name }}</h2>
+    {% for Tag_post in Tag.Post_tags.all %}
+    <article class="post">
+        <time class="date">published: {{ Tag_post.published_date }}</time>
+        <h2><a href="{% url 'post_detail' slug=Tag_post.slug %}">{{ Tag_post.title }}</a></h2>
+        <p>{{ Tag_post.title|linebreaksbr }}</p>
+    </article>
+    {% endfor %}
+    </article>
+{% endblock %}

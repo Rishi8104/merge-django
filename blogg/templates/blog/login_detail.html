@@ -1,0 +1,28 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block title %} Login Page {% endblock %}
+{% block loginactive %} active {% endblock loginactive %}
+{% block content %}
+<body>
+  <div class="background"> 
+    <div class="shape"><div>
+    </div class="shape"></div>
+  </div>
+<form action="blog/login_detail/" method="POST"> {% csrf_token %}
+  <h3>Login Here</h3>
+    <div class="container mt-5">
+    <div class="mb-3">
+      <label for="username" class="form-label">Username</label>
+      <input type="text" class="form-control" id="username" name="username">
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input type="password" class="form-control" id="password" name="password">
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+  </form>
+</body>
+  {% endblock %}
+  

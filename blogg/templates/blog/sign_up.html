@@ -1,0 +1,40 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block content %}
+<body>
+    <div class="back
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    <form action="" method="post">
+        {% csrf_token %} 
+        <h3>Signup Here</h3>
+        <div class="container mt-5">
+        <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" class="form-control" placeholder="Username" name="username" id="username">
+        </div>
+        <div class="mb-3">
+        <label for="firstname" class="form-label">firstname</label>
+        <input type="text" class="form-control" placeholder="Username" name="user_name" id="username">
+        </div>
+        <div class="mb-3">
+        <label for="lastname" class="form-label">lastname</label>
+        <input type="text"  class="form-control"placeholder="Username" name="user_name" id="username">
+        </div>
+        <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" placeholder="Email or Phone" name="email" id="email">
+        </div> 
+        <div class="mb-3">   
+        <label for="password1" class="form-label">Password</label>
+        <input type="password" class="form-control" placeholder="Password" id="password1" name="password1">
+        </div>
+        <div class="mb-3">
+        <label for="password2" class="form-label">Confrom Password</label>
+        <input type="password" class="form-control" placeholder="Confrom Password" id="password2" name="password2">
+        <button type="submit" class="btn btn-primary">Signup</button>
+        </div>
+        <a href="{% url 'login_detail' %}" >i have already account</a>
+    </form>
+{% endblock  %}

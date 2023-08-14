@@ -1,0 +1,18 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block content %}
+        <aside class="actions">
+            {% if user.is_authenticated %}
+     <a href="{% url 'category_detail' slug=category.slug %}"></a>
+{% endif %}
+    
+    </aside>    
+    <h2>{{ category.title }}</h2>
+    {% for category_post in category.Post_category.all %}
+        <article class="post">
+            <time class="date">published: {{ category_post.published_date }}</time>
+            <h2><a href="{% url 'post_detail' slug=category_post.slug %}">{{ post.title }}</a></h2>
+            <p>{{ category_post.title|linebreaksbr }}</p>
+        </article>
+    {% endfor %}
+{% endblock %}
