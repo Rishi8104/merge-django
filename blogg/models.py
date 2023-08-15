@@ -1,12 +1,25 @@
 from django.db import models
 from django.conf import settings
-from django.utils import timezone 
+from django.utils import timezone
 from django.urls import reverse
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 import uuid
 # Create your models here.
+class Comment(models.Model):
+    #user = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField()
+    #Post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    parent_comment = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)   
+    dateTime=models.DateTimeField()
 
-class Profile(models.Model):
+    def __str__(self):
+        return self.user.username +  " Comment: " + self.content
+
+class User(AbstractUser):
+    phone = models.IntegerField(default=0)
+    
+class User_Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
     image = models.ImageField(upload_to="profile_pics", blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
@@ -14,6 +27,7 @@ class Profile(models.Model):
     facebook = models.CharField(max_length=300, blank=True, null=True)
     instagram = models.CharField(max_length=300, blank=True, null=True)
     linkedin = models.CharField(max_length=300, blank=True, null=True)
+    slug = models.SlugField(unique=True, default=uuid.uuid4)
     
     def __str__(self):
         return str(self.user)
@@ -61,6 +75,7 @@ class Post(models.Model):
     text =models.TextField()
     category=models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL,related_name="Post_category")
     Tag = models.ManyToManyField(Tag ,related_name="Post_tags")
+    Comment=models.ManyToManyField(Comment,related_name="Post_tags")
     create_date =  models.DateTimeField(default= timezone.now)
     published_date= models.DateTimeField(blank=True,null=True)
     slug =models.SlugField(unique=True, default=uuid.uuid4)

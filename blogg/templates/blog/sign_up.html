@@ -6,8 +6,7 @@
         <div class="shape"></div>
         <div class="shape"></div>
     </div>
-    <form action="" method="post">
-        {% csrf_token %} 
+    <form method="post">{% csrf_token %} 
         <h3>Signup Here</h3>
         <div class="container mt-5">
         <div class="mb-3">
@@ -16,11 +15,11 @@
         </div>
         <div class="mb-3">
         <label for="firstname" class="form-label">firstname</label>
-        <input type="text" class="form-control" placeholder="Username" name="user_name" id="username">
+        <input type="text" class="form-control" placeholder="firstname" name="first_name" id="firstname">
         </div>
         <div class="mb-3">
         <label for="lastname" class="form-label">lastname</label>
-        <input type="text"  class="form-control"placeholder="Username" name="user_name" id="username">
+        <input type="text"  class="form-control"placeholder="lastname" name="last_name" id="lastname">
         </div>
         <div class="mb-3">
         <label for="email" class="form-label">Email</label>
@@ -31,8 +30,9 @@
         <input type="password" class="form-control" placeholder="Password" id="password1" name="password1">
         </div>
         <div class="mb-3">
-        <label for="password2" class="form-label">Confrom Password</label>
-        <input type="password" class="form-control" placeholder="Confrom Password" id="password2" name="password2">
+        <label for="password2" class="form-label">confirm Password</label>
+        <input type="password" class="form-control" placeholder="confirm Password" id="password2" name="password2">
+        <br>
         <button type="submit" class="btn btn-primary">Signup</button>
         </div>
         <a href="{% url 'login_detail' %}" >i have already account</a>

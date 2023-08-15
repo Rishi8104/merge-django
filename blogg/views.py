@@ -1,10 +1,11 @@
 from django.shortcuts import render, get_object_or_404,redirect,HttpResponse
 from django.utils import timezone
-from .models import Post,Category,Tag
-from .forms import PostForm
-from django.contrib.auth.models import User 
+from .models import Post,Category,Tag,User
+from .forms import PostForm,ProfileForm,NewUserFrom
+# from django.contrib.auth.models import User 
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login,logout, authenticate 
+from django.contrib.auth import login,logout, authenticate
+from django.contrib import messages
 
 
 # Create your views here.
@@ -18,10 +19,29 @@ def post_detail(request,slug):
     Post.objects.get(slug=slug)
     post = get_object_or_404(Post,slug=slug)
     return render(request, 'blog/post_detail.html',{'post':post})
-    
+
+# def blogs_comments(request, slug):
+#     post= Post.objects.filter(slug=slug).first()
+#     comments= Comment.objects.filter(blog=post)
+#     if request.method == "POST":
+#         user= request.user
+#         content= request.POST.get('content','')
+#         blog_id=request.POST.get('blog_id','')
+#         comment=Comment(user=user,content=content,blog=post)
+#         comment.save()
+#     return render(request,"blog_comments.html",{'post':post,'comments':comments})
+
+# def reply_Blog_Post(request,slug)
+#     posts=Post.objects.get(slug=slug)
+#     if request.method=="POST":
+#         posts.delete()
+#         return redirect('/')
+#     return render(request, 'reply_blog_post.html',{'posts':posts})
+@login_required(login_url = 'blog/login_detail.html')
 def post_new(request):
     form = PostForm(request.post,)
     return render(request, 'blog/post_edit.html',{'from':form})
+
 
 def post_new(request):
     if request.method == "POST":
@@ -70,22 +90,14 @@ def Tag_detail(request, slug):
 
 def sign_up(request):
     if request.method=='POST':
-        fname=request.POST.get('first_name')
-        last_name=request.POST.get('last_name')
-        username=request.POST.get('username')
-        email=request.POST.get('email')
-        pass1=request.POST.get('password1')
-        pass2=request.POST.get('password2')
-
-        if pass1!=pass2:
-            return HttpResponse("Your password and confrom password are not same !!")
-        else:
-            usr_obj = User.objects.create(first_name=fname,last_name=last_name,username=username,email=email,pass1=pass1,)
-            # print(first_name)
-            usr_obj.save()
-            return redirect('blog/login_detail.html')
-            
-
+        form= NewUserFrom(request.POST)
+        #print(form)
+        if form.is_valid():
+            User=form.save()
+            login(request,User)
+            messages.success(request,"Registration successful.")
+            return redirect('login_detail')
+        return render (request=request, template_name="blog/sign_up.html", context={})
     return render(request,'blog/sign_up.html')
 
 def login_detail(request):
@@ -95,13 +107,41 @@ def login_detail(request):
         user=authenticate(request,username=username,password=pass1)
         if user is not None:
             login(request,user)
-            print("user password is correct1!!")
-            return redirect('blog/post_list.html')
+            print("Successfully Logged IN!!")
+            return redirect('Post_list')
         else:
-            return HttpResponse("Username or password is incorrect !!!")
-    return render(request,'blog/login_detail.html')
+            messages.error( request,"Username or password is incorrect !!!")
+        return render(request,'blog/Post_list.html')
+    return render(request, "blog/login_detail.html")
+
 
 def LogoutPage(request):
     logout(request)
-    return redirect('blog/login_detail.html')
+    messages.success(request,"Successfully Logged Out !")
+    return redirect('blog/login_detail')
+
+def User_Profile(request,slug):
+    
+    post = Post.objects.filter(Post,slug=slug)
+    post = get_object_or_404(Post, slug=slug)
+    return render(request,"blog/user_profile.html",{'Post':post})
+
+def Profile(request):
+    return render(request, "blog/profile.html")
+
+def update_profile(request):
+    try:
+        uprofile = request.user.Profile
+    except: Profile.DoesNotExist
+    uprofile = Profile(user=request.user)
+    if request.method=="POST":
+        form = ProfileForm(data=request.POST, files=request.FILES, instance=uprofile)
+        if form.is_valid():
+            form.save()
+            alert = True
+            return render(request, "blog/update_profile.html", {'alert':alert})
+    else:
+        form=ProfileForm(instance=uprofile)
+    return render(request, "blog/update_profile.html", {'form':form})
+    
     

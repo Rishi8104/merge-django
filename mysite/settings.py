@@ -127,3 +127,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # Added manually
+AUTH_USER_MODEL = "blogg.User"
