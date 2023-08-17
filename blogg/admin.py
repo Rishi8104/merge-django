@@ -7,6 +7,17 @@ from .models import *
 #     list_display=("username","password","Password confirmation",)
     # prepopulated_fields = {"slug": ("username", "password" "Password confirmation",)}
 
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display =('name','email','body','created_on','active')
+    list_filter =('active','created_on')
+    search_fields=('name','email','body')
+    actions = ['approve_comments']
+
+    def approve_comments(self,request,queryset):
+        queryset.update(active=True)
+        
+
     
 admin.site.register(Post)
 admin.site.register(Category)

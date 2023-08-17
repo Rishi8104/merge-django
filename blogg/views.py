@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404,redirect,HttpResponse
 from django.utils import timezone
-from .models import Post,Category,Tag,User
-from .forms import PostForm,ProfileForm,NewUserFrom
+from .models import Post,Category,Tag
+from .forms import PostForm,NewUserFrom,NewUserFrom,CommentForm
 # from django.contrib.auth.models import User 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login,logout, authenticate
@@ -16,9 +16,22 @@ def post_list(request):
     
 
 def post_detail(request,slug):
-    Post.objects.get(slug=slug)
+    #template_name = 'post_detail.html'
     post = get_object_or_404(Post,slug=slug)
-    return render(request, 'blog/post_detail.html',{'post':post})
+    Comment= post.Comment.filter(active=True)
+    new_comment=None #comment posted
+    if request.method== 'POST':
+        comment_form = CommentForm(data=request.POST)
+        if comment_form.is_valid():
+            new_comment=comment_form.save(commit=False)
+            new_comment.post=post
+            new_comment.save()
+    else:
+        comment_form = CommentForm() 
+    return render(request,"post_detail.html",{'post':post,
+                                          'Comment': Comment,
+                                           'new_comment': new_comment,
+                                           'comment_form': comment_form})
 
 # def blogs_comments(request, slug):
 #     post= Post.objects.filter(slug=slug).first()
@@ -75,7 +88,6 @@ def category_list(request):
     return render ( request,'blog/category_list.html',{'categories':categories})
 
 def category_detail(request, slug):
-    # Category.objects.get(slug=slug)
     category = get_object_or_404(Category, slug=slug)
     return render(request, 'blog/category_detail.html', {'category': category})
 
@@ -103,45 +115,56 @@ def sign_up(request):
 def login_detail(request):
     if request.method=='POST':
         username=request.POST.get('username')
-        pass1=request.POST.get('pass')
-        user=authenticate(request,username=username,password=pass1)
-        if user is not None:
-            login(request,user)
+        print('username',username)
+        pass1=request.POST.get('pass1')
+        print('password',pass1)
+        User=authenticate(request,username=username,password=pass1)
+        if User is not None:
+            login(request,User)
             print("Successfully Logged IN!!")
-            return redirect('Post_list')
+            return redirect('post_list')
         else:
             messages.error( request,"Username or password is incorrect !!!")
-        return render(request,'blog/Post_list.html')
+        return render(request,'blog/user_profile.html')
     return render(request, "blog/login_detail.html")
 
 
 def LogoutPage(request):
     logout(request)
     messages.success(request,"Successfully Logged Out !")
-    return redirect('blog/login_detail')
+    return redirect('login_detail')
 
 def User_Profile(request,slug):
-    
     post = Post.objects.filter(Post,slug=slug)
     post = get_object_or_404(Post, slug=slug)
     return render(request,"blog/user_profile.html",{'Post':post})
 
 def Profile(request):
-    return render(request, "blog/profile.html")
+    user = request.user
+    return render(request, "blog/profile.html", {'user':user})
 
 def update_profile(request):
-    try:
-        uprofile = request.user.Profile
-    except: Profile.DoesNotExist
-    uprofile = Profile(user=request.user)
-    if request.method=="POST":
-        form = ProfileForm(data=request.POST, files=request.FILES, instance=uprofile)
+    # try:
+    #     profile = request.user.profile
+    # except Profile.DoesNotExist:
+    #     pass
+    #     profile = Profile(user=request.user)
+    
+    if request.method == "POST":
+        form = NewUserFrom(data=request.POST, instance=request.user,files=request.FILES, )
+        
         if form.is_valid():
             form.save()
             alert = True
-            return render(request, "blog/update_profile.html", {'alert':alert})
+            return render(request, "blog/update_profile.html", {'alert': alert})
     else:
-        form=ProfileForm(instance=uprofile)
-    return render(request, "blog/update_profile.html", {'form':form})
+        form = NewUserFrom(instance=request.user)
+        
+    
+    return render(request, "blog/update_profile.html", {'form': form})
+
+
+
     
     
+ 

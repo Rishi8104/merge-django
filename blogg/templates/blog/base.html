@@ -28,18 +28,22 @@
                 <h1><a href="/Tag">Tag</a>
                 </a></h1>
             </div>
-            <div class=" m-2">
-                <h1><a href="/signup">signup</a>
-                </a></h1>
-            </div>
-            <div class=" m-2">
-                <h1><a href="/login">login</a>
-                </a></h1>
-            </div>
+            {% if user.is_authenticated %}
             <div class=" m-2">
                 <h1><a href="/profile">profile</a>
                 </a></h1>
             </div>
+            {% else %}
+            <div class=" m-2">
+                <h1><a href="/signup">signup</a>
+                </a></h1>
+            </div>
+            
+            <div class=" m-2">
+                <h1><a href="/login">login</a>
+                </a></h1>
+            </div>
+            {% endif %}
             <div class="ml-auto m-2">
             <a href="{% url 'post_new' %}" class="top-menu">
                 {% include './icons/file-earmark-plus.svg' %}
@@ -52,6 +56,7 @@
             <div class="row">
                 <div class="col">
                 {% block content %}
+
                 {% endblock %}
                 </div>
             </div>

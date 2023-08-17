@@ -5,9 +5,8 @@
     <div class="row">
         <div class="col-md-4">
             <div class="profile-img">
-                {% if user.User_Profile.image %}
-                <img src="{{user.User_Profile.image.url}}" alt="" width="310px" height="270px">
-                {% endif %}
+                <img src="{{user.user_profile.image.url}}" alt="" width="310px" height="270px">
+
             </div>
         </div>
         <div class="col-md-8">
@@ -16,78 +15,51 @@
                     <br><br>
                     <div class="row">
                         <div class="col-md-6">
-                            <label>Username:</label>
-                        </div>
-                        <div class="col-md-6">
-                            <p>{{user}}</p>
+                            <label>Username:{{user.username}}</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <label>Full Name:</label>
-                        </div>
-                        <div class="col-md-6">
-                            <p>{{user.get_full_name}}</p>
+                            <label>Full Name:{{user.first_name}}</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <label>Email:</label>
-                        </div>
-                        <div class="col-md-6">
-                            <p>{{user.email}}</p>
+                            <label>Email:{{user.email}}</label>
                         </div>
                     </div>
-                    {% if user.User_Profile.phone_no %}
+                    
                     <div class="row">
                         <div class="col-md-6">
-                            <label>Phone Number:</label>
-                        </div>
-                        <div class="col-md-6">
-                            <p>{{user.User_Profile.phone_no}}</p>
+                            <label>Phone Number {{user.phone_no}}</label>
                         </div>
                     </div>
-                    {% endif %}
-                    {% if user.profile.bio %}
+    
                     <div class="row">
                         <div class="col-md-6">
-                            <label>Bio:</label>
-                        </div>
-                        <div class="col-md-6">
-                            <p>{{user.User_Profile.bio}}</p>
+                            <label>Bio{{user.Bio}}</label>
                         </div>
                     </div>
-                    {% endif %}
-                    {% if user.User_Profile.linkedin %}
+                    
+            
                     <div class="row">
                         <div class="col-md-6">
-                            <label>Linkedin:</label>
+                            <label>Linkedin{{user.Linkedin}}</label>
                         </div>
-                        <div class="col-md-6">
-                            <p><a href="{{user.profile.linkedin}}">{{user.profile.linkedin}}</a></p>
-                        </div>
+                        
                     </div>
-                    {% endif %}
-                    {% if user.User_Profile.instagram %}
                     <div class="row">
                         <div class="col-md-6">
-                            <label>Instagram:</label>
+                            <label>Instagram:{{user.Instagram}}</label>
                         </div>
-                        <div class="col-md-6">
-                            <p><a href="{{user.profile.instagram}}">{{user.profile.instagram}}</a></p>
-                        </div>
+                        
                     </div>
-                    {% endif %}
-                    {% if user.User_Profile.facebook %}
                     <div class="row">
                         <div class="col-md-6">
-                            <label>Facebook:</label>
+                            <label>Facebook{{user.Facebook}}</label>
                         </div>
-                        <div class="col-md-6">
-                            <p><a href="{{user.profile.facebook}}">{{user.profile.facebook}}</a></p>
-                        </div>
+                        
                     </div>
-                    {% endif %}
                 </div>
                 <a href="/update_profile/" class="btn btn-secondary">Edit Profile</a>
             </div>

@@ -7,19 +7,25 @@
       <div class="row">
         <div class="col">
           <div class="ml-auto m-2">
-            <a href="{% url 'login_detail' %}" class="top-menu">
-              <button type="submit" class="btn btn-primary">Login</button>
+            <a href="{% url 'logout' %}" class="top-menu">
+              <button type="submit" class="btn btn-primary">LogOut</button>
             </a>
             </div>
           {% for post in posts %}
+          <div class="col-lg-4 my-4">
           <article class="media content-section">
             <div class="media-body">
               <div class="article-metadata">
-                <imp src="{% static Post.author.image %}" alt=""/>
-                <a class="mr-2" href="#">{{ post.author }}</a>
+                <div class="card shadow" style="width: 60rem; height: 40rem;">
+                  <img src="{{blogg.post.Image.url}}" class="card-img-top" alt="..." height="250px">
+                  <div class="card-body">
+                <h5 class="card-title"></h5>
             <time class="date">published: {{ post.published_date }}</time>
             <h2><a href="{% url 'post_detail' slug=post.slug %}">{{ post.title }}</a></h2>
             <p>{{ post.text|linebreaksbr }}</p>
+          </div>
+        </div>
+          </div>
           </div>
           </div>
           </article>
