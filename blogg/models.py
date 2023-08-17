@@ -6,23 +6,8 @@ from django.urls import reverse
 from django.contrib.auth.models import AbstractUser
 from autoslug import AutoSlugField
 # Create your models here.
-class Comment(models.Model):
-    name = models.CharField(max_length=80)
-    email = models.EmailField()
-    body = models.TextField()
-    created_on = models.DateTimeField(auto_now_add=True)
-    active=models.BooleanField(default=False)
-
-    class Meta:
-        ordering=["created_on"]
-
-    def __str__(self):
-        return 'comment{} by{}'.format(self.body,self.name)
-                
-    
-
 class User(AbstractUser):
-    #user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
+    #user = models.OneToOneField('self',on_delete=models.CASCADE, blank=True, null=True)
     image = models.ImageField(upload_to="profile_pics", blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
     phone_no = models.IntegerField(blank=True, null=True)
@@ -76,7 +61,6 @@ class Post(models.Model):
     text =models.TextField()
     category=models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL,related_name="Post_category")
     Tag = models.ManyToManyField(Tag ,related_name="Post_tags")
-    Comment=models.ManyToManyField(Comment,related_name="Post_tags")
     create_date =  models.DateTimeField(default= timezone.now)
     published_date= models.DateTimeField(blank=True,null=True)
     slug = AutoSlugField(populate_from='title',unique=True, blank=True, null=True)
@@ -92,4 +76,28 @@ class Post(models.Model):
     def get_absolute_url(self):
             return reverse("post_detail", kwargs={"slug": self.slug})
 
+class Comment(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)   
+    post = models.ForeignKey(Post ,on_delete=models.CASCADE )
+    parent = models.ForeignKey('self',null=True , blank=True , on_delete=models.CASCADE , related_name='replies')
+    name = models.CharField(max_length=80)
+    email = models.EmailField()
+    body = models.TextField()
+    created_on = models.DateTimeField(auto_now_add=True)
+    active=models.BooleanField(default=False)
+
+    # class Meta:
+    #     ordering=["created_on"]
+    
+    def children(self):
+        return Comment.objects.filter(parent=self).reverse()
+    
+    
+    def is_parent(self):
+        if self.parent is None:
+            return True
+        return False
+
+    def __str__(self):
+        return 'comment{} by{}'.format(self.body,self.name)
         

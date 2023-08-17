@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404,redirect,HttpResponse
 from django.utils import timezone
-from .models import Post,Category,Tag
+from .models import Post,Category,Tag,Comment
 from .forms import PostForm,NewUserFrom,NewUserFrom,CommentForm
 # from django.contrib.auth.models import User 
 from django.contrib.auth.decorators import login_required
@@ -16,9 +16,10 @@ def post_list(request):
     
 
 def post_detail(request,slug):
-    #template_name = 'post_detail.html'
+    template_name = "blog/post_detail.html"
     post = get_object_or_404(Post,slug=slug)
-    Comment= post.Comment.filter(active=True)
+    comments = Comment.objects.filter(active=True)     #post=self.get_object()
+    print("comments")
     new_comment=None #comment posted
     if request.method== 'POST':
         comment_form = CommentForm(data=request.POST)
@@ -28,8 +29,8 @@ def post_detail(request,slug):
             new_comment.save()
     else:
         comment_form = CommentForm() 
-    return render(request,"post_detail.html",{'post':post,
-                                          'Comment': Comment,
+    return render(request,template_name,{'post':post,
+                                          'Comment': comments,
                                            'new_comment': new_comment,
                                            'comment_form': comment_form})
 
@@ -163,8 +164,4 @@ def update_profile(request):
     
     return render(request, "blog/update_profile.html", {'form': form})
 
-
-
-    
-    
  
