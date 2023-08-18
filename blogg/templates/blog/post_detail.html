@@ -14,6 +14,7 @@
                 {{ post.published_date }}
             </time>
         {% endif %}
+        <img src="{{post.Image.url}}" class="card-img-top" alt="..." height="250px">
         <h2>{{ post.title }}</h2>
         <h3>{{ category.title }}</h3>
         <p>{{ post.text|linebreaksbr }}</p>

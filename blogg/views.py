@@ -84,7 +84,7 @@ def post_new(request):
 def post_edit(request, slug):
     post = get_object_or_404(Post, slug=slug)
     if request.method == "POST":
-        form = PostForm(request.POST, instance=post)
+        form = PostForm(request.POST, instance=post, files=request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
@@ -163,7 +163,7 @@ def update_profile(request):
     #     profile = Profile(user=request.user)
     
     if request.method == "POST":
-        form = NewUserFrom(data=request.POST, instance=request.user,files=request.FILES, )
+        form = NewUserFrom(data=request.POST, instance=request.user, files=request.FILES, )
         
         if form.is_valid():
             form.save()

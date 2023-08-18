@@ -56,7 +56,7 @@ class Category(models.Model):
 
 
 class Post(models.Model):
-    Image =models.ImageField( upload_to = '\media\profile_pics')
+    Image =models.ImageField( upload_to = 'postimg/' )
     author =models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title =models.CharField(max_length=300 ,null=False,blank=False)
     text =models.TextField()
@@ -76,6 +76,7 @@ class Post(models.Model):
     
     def get_absolute_url(self):
             return reverse("post_detail", kwargs={"slug": self.slug})
+        
 
 class Comment(models.Model):
     user = models.ForeignKey(User,null=True , blank=True,on_delete=models.CASCADE)   

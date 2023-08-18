@@ -1,4 +1,6 @@
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from . import views
 appname='blogg'
 urlpatterns = [
@@ -16,4 +18,6 @@ urlpatterns = [
     path("profile/",views.Profile, name="profile"),
     path("update_profile/", views.update_profile, name="update_profile"),
     path("user_profile/<slug>/", views.User_Profile, name="user_profile"),
-    ]
+
+    ]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    

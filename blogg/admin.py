@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.utils.html import format_html
 from .models import *
 
 
@@ -17,9 +18,14 @@ class CommentAdmin(admin.ModelAdmin):
         queryset.update(active=True)
 
 class PostAdmin(admin.ModelAdmin):
+    def Image_tag(self,obj):
+        return format_html('<img src="{}" style="height:50px; width:50px;"/>'.format(obj.Image.url))
+    
     search_fields = ('title',)
-    list_display = ('title','Image','create_date','published_date','text')
+    list_display = ('title','Image_tag','create_date','published_date','text')
     list_filter = ["published_date"]
+
+        
 
 class CategoryAdmin(admin.ModelAdmin):
     search_fields = ('title',)
