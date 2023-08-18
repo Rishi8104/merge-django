@@ -153,7 +153,8 @@ def User_Profile(request,slug):
 
 def Profile(request):
     user = request.user
-    return render(request, "blog/profile.html", {'user':user})
+    print('User Name :',user.username)
+    return render(request, "blog/user_profile.html", {'user':user})
 
 def update_profile(request):
     # try:

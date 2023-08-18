@@ -5,12 +5,10 @@
 <div class="container profile">
     <form method="post">
         <div class="row">
-            {% for i in post %}
-
             <div class="col-md-4">
                 <div class="profile-img">
-                    {% if i.author.profile.image %}
-                    <img src="{{i.author.profile.image.url}}" alt="" width="310px" height="270px">
+                    {% if user.image %}
+                    <img src="{{user.image.url}}" alt="" width="310px" height="270px">
                     {% endif %}
                 </div>
             </div>
@@ -22,65 +20,50 @@
                                     <div class="col-md-6">
                                         <label>Username:{{user.username}}</label>
                                     </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-md-6">
-                                        <p>{{i.author}}</p>
+                                        <label>Full Name: {{user.Fullname}}</label>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label>Full Name:</label>
+                                        <label>Email:{{user.email}}</label>
                                     </div>
-                                    <div class="col-md-6">
-                                        <p>{{i.author.get_full_name}}</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Email:</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <p>{{i.author.email}}</p>
-                                    </div>
+                            
                                 </div> 
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label>Bio:</label>
+                                        <label>Bio:{{user.Bio}}</label>
                                     </div>
-                                    <div class="col-md-6">
-                                        <p>{{i.author.profile.bio}}</p>
-                                    </div>
+                                    
                                 </div>    
-                                {% if i.author.profile.linkedin %}
+                                {% if user.profile.linkedin %}
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label>Linkedin:</label>
+                                        <label>Linkedin:{{user.Linkedin}}</label>
                                     </div>
-                                    <div class="col-md-6">
-                                        <p>{{i.author.profile.linkedin}}</p>
-                                    </div>
+                                    
                                 </div>  
                                 {% endif %}
-                                {% if i.author.profile.instagram %}
+                                {% if user.profile.instagram %}
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label>Instagram:</label>
+                                        <label>Instagram:{{user.Linkedin}}</label>
                                     </div>
-                                    <div class="col-md-6">
-                                        <p>{{i.author.profile.instagram}}</p>
-                                    </div>
+                                    
                                 </div>
                                 {% endif %}
-                                {% if i.author.profile.facebook %}
+                                {% if user.profile.facebook %}
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label>Facebook:</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <p>{{i.author.profile.facebook}}</p>
-                                    </div>
+                                        <label>Facebook: {{user.Facebook}}</label>
+                                    </div>      
                                 </div>
                                 {% endif %}
-                                {% endfor %}                 
+                            
+                                <a href="/update_profile/" class="btn btn-secondary">Edit Profile</a>
+                                          
                     </div>                 
                 </div>
             </div>
