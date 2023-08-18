@@ -3,23 +3,40 @@ from django.contrib.auth.admin import UserAdmin
 from .models import *
 
 
-# class Admin(admin.ModelAdmin):
-#     list_display=("username","password","Password confirmation",)
+class Admin(admin.ModelAdmin):
+     list_display=("username","password","Password confirmation")
     # prepopulated_fields = {"slug": ("username", "password" "Password confirmation",)}
 
-@admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     list_display =('name','email','body','created_on','active')
     list_filter =('active','created_on')
     search_fields=('name','email','body')
-    actions = ['approve_comments']
+    #actions = ['approve_comments']
 
     def approve_comments(self,request,queryset):
         queryset.update(active=True)
-        
+
+class PostAdmin(admin.ModelAdmin):
+    search_fields = ('title',)
+    list_display = ('title','Image','create_date','published_date','text')
+    list_filter = ["published_date"]
+
+class CategoryAdmin(admin.ModelAdmin):
+    search_fields = ('title',)
+    list_display = ('title',)
+    list_filter = ["title"]
+
+class TagAdmin(admin.ModelAdmin):
+    search_fields = ('name',)
+    list_display = ('name',)
+    list_filter = ["name"]
+    
+
+
 
     
-admin.site.register(Post)
-admin.site.register(Category)
-admin.site.register(Tag)
+admin.site.register(Post,PostAdmin)
+admin.site.register(Comment,CommentAdmin)
+admin.site.register(Category,CategoryAdmin)
+admin.site.register(Tag, TagAdmin)
 admin.site.register(User, UserAdmin)

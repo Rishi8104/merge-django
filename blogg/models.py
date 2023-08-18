@@ -18,6 +18,7 @@ class User(AbstractUser):
 
     def __str__(self):
         return str(self.username)
+        
 
 
 class Tag(models.Model):
@@ -33,8 +34,8 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
-    def get_absolute_url(self):
-        return reverse("Tag_detail", kwargs={"slug": self.slug})
+    # def get_absolute_url(self):
+    #     return reverse("Tag_detail", kwargs={"slug": self.slug})
 
 
 class Category(models.Model):
@@ -50,8 +51,8 @@ class Category(models.Model):
     def __str__(self):
         return self.title
 
-    def get_absolute_url(self):
-        return reverse("category_detail", kwargs={"slug": self.slug})
+    # def get_absolute_url(self):
+    #     return reverse("category_detail", kwargs={"slug": self.slug})
 
 
 class Post(models.Model):
@@ -77,14 +78,14 @@ class Post(models.Model):
             return reverse("post_detail", kwargs={"slug": self.slug})
 
 class Comment(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE)   
-    post = models.ForeignKey(Post ,on_delete=models.CASCADE )
+    user = models.ForeignKey(User,null=True , blank=True,on_delete=models.CASCADE)   
+    post = models.ForeignKey(Post ,null=True , blank=True,on_delete=models.CASCADE )
     parent = models.ForeignKey('self',null=True , blank=True , on_delete=models.CASCADE , related_name='replies')
     name = models.CharField(max_length=80)
     email = models.EmailField()
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
-    active=models.BooleanField(default=False)
+    active=models.BooleanField(default=True)
 
     # class Meta:
     #     ordering=["created_on"]

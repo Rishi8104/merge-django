@@ -13,9 +13,6 @@
             <time class="date">
                 {{ post.published_date }}
             </time>
-            <!-- <image class="Image">
-                {{ post.Image }}
-            </image> -->
         {% endif %}
         <h2>{{ post.title }}</h2>
         <h3>{{ category.title }}</h3>
@@ -23,20 +20,62 @@
     </article>  
     
 <h2> Comments </h2>
-{% if user.is_authenticated %}
- <form action="" method="POST" id="main_form" class="comment_form">
+<h2>Add a new comment</h2>
+<form action="." method="post">
+    {{ comment_form.as_p }}
+    {% csrf_token %}
+    <button type="submit">Add comment</button>
+</form>
+
+{% for comment in Comment %}
+    <div class="comment" style="background-color: powderblue">
+        <p class="info">{{ comment.name }} | {{ comment.created }}</p>
+            {{ comment.body|linebreaks }}
+
+        {% for replay in comment.replies.all %}
+            <p class="info">{{ replay.name }} | {{ replay.created }}</p>
+            <li>{{ replay.body }}</li>
+        {% endfor %}
+
+        <h5>Replay</h5>
+        <form action="." method="post">
+            {{ comment_form.as_p }}
+            {% csrf_token %}
+            <!-- Hidden input for parent comment.id -->
+            <input type="hidden" name="parent_slug" value="{{ comment_slug }}">
+            <input class="btn btn-primary" type="submit" value="Replay">
+        </form>
+    </div>
+{% empty %}
+<h4>There are no comments yet.</h4>
+{% endfor %}
+
+
+
+
+<!-- {% if user.is_authenticated %}
+ <form action="" method="post" id="main_form" class="comment_form">
     <div>
         <label for="comment">Type Comment here</label>
-       {{ comment_form.body }} {% csrf_token %} <input type="submit" value="Post"></div>
+       {{ comment }} {% csrf_token %} <input type="submit" value="Post"></div>
     </div>
  </form>
  {% else %} <h2>You need to Login to comment</h2> 
  {% endif %}
 
- {% for comment in comments %}
-    <h3> <b>{{ comment.author }} : </b> {{ comment.content }}</h3> 
-    {% for replies in comment.children %}
-       <p>&nbsp; &nbsp; &nbsp; <b>{{ comment.author }} : </b> {{ replies.content }}</p>
-    {% endfor %}
- {% endfor %}
+ {% for comment in Comment %}
+         <h3> <b>{{ comment.name }} : </b> {{ comment }}</h3> 
+         &nbsp; &nbsp; &nbsp;
+         <form action="" method="POST" id="main_form" class="comment_form">
+            <div>
+                &nbsp; &nbsp; &nbsp;<label for="comment">Reply here</label>
+               &nbsp; &nbsp; &nbsp;<input type="text" name="content"> <input type="hidden" value="{{ comment.slug }}" name="parent"> {% csrf_token %} <input type="submit" value="Post"></div>
+            </div>
+         </form>
+
+         {% for reply in comment.children  %}
+            <h3>&nbsp; &nbsp; &nbsp; <b>{{comment.name}} :</b> {{reply.content}}</h3>
+         {% endfor%} -->
+
+ <!-- {% endfor %} -->
 {% endblock %}

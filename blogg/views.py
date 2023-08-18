@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404,redirect,HttpResponse
+from django.shortcuts import render, get_object_or_404,redirect,HttpResponseRedirect
 from django.utils import timezone
 from .models import Post,Category,Tag,Comment
 from .forms import PostForm,NewUserFrom,NewUserFrom,CommentForm
@@ -18,15 +18,26 @@ def post_list(request):
 def post_detail(request,slug):
     template_name = "blog/post_detail.html"
     post = get_object_or_404(Post,slug=slug)
-    comments = Comment.objects.filter(active=True)     #post=self.get_object()
+    comments = Comment.objects.filter(active=True, parent__isnull= True)     #post=self.get_object()
     print("comments")
     new_comment=None #comment posted
     if request.method== 'POST':
         comment_form = CommentForm(data=request.POST)
         if comment_form.is_valid():
+            parent_obj=None
+            try:
+                parent_id=int(request.POST.get('parent_id'))
+            except: parent_id=None
+                
+            if parent_id:
+                parent_obj = Comment.objects.get(id= parent_id)
+                if parent_obj:
+                    replay_comment = comment_form.save(commit=False)
+                    replay_comment.parent = parent_obj
             new_comment=comment_form.save(commit=False)
             new_comment.post=post
             new_comment.save()
+            return HttpResponseRedirect(post.get_absolute_url())
     else:
         comment_form = CommentForm() 
     return render(request,template_name,{'post':post,

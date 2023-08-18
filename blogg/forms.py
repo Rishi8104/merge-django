@@ -29,4 +29,4 @@ def save(self,commit=True):
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ('user','post','name', 'email', 'body')
+        fields = ('name', 'email', 'body')

@@ -25,3 +25,6 @@ urlpatterns = [
      
 
 ]
+
+admin.site.site_header = 'BLOG Admin'
+admin.site.index_title = 'Welcome To Blog Portal'
