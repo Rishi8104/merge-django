@@ -125,8 +125,13 @@ def sign_up(request):
     return render(request,'blog/sign_up.html')
 
 def login_detail(request):
+    
     if request.method=='POST':
         username=request.POST.get('username')
+        usrnm = User.object.get(username=username)
+        print(usrnm)
+        email=request.POST.get('username')
+        print (email)
         print('username',username)
         pass1=request.POST.get('pass1')
         print('password',pass1)
